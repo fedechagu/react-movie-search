@@ -1,44 +1,54 @@
 
 var React = window.React = require('react'),
-    Timer = require("./ui/Timer"),
     mountNode = document.getElementById("app");
 
-var TodoList = React.createClass({
-  render: function() {
-    var createItem = function(itemText) {
-      return <li>{itemText}</li>;
-    };
-    return <ul>{this.props.items.map(createItem)}</ul>;
-  }
-});
-var TodoApp = React.createClass({
-  getInitialState: function() {
-    return {items: [], text: ''};
+var MovieApp = React.createClass({
+  getInitialState: function () {
+    return { search: '' };
   },
-  onChange: function(e) {
-    this.setState({text: e.target.value});
+  handleUserInput: function (searchText) {
+    this.setState({search: searchText});
+    console.log(searchText)
   },
-  handleSubmit: function(e) {
-    e.preventDefault();
-    var nextItems = this.state.items.concat([this.state.text]);
-    var nextText = '';
-    this.setState({items: nextItems, text: nextText});
-  },
-  render: function() {
+  render: function () {
     return (
       <div>
-        <h3>TODO</h3>
-        <TodoList items={this.state.items} />
-        <form onSubmit={this.handleSubmit}>
-          <input onChange={this.onChange} value={this.state.text} />
-          <button>{'Add #' + (this.state.items.length + 1)}</button>
-        </form>
-        <Timer />
+        <MovieSearch 
+          onUserInput={this.handleUserInput} />
+        <MovieList />
       </div>
-    );
+      );
   }
 });
 
+var MovieList = React.createClass({
+  render: function () {
+    var items = ['Hello World', 'hi', 'foo', 'bar'];
+    return (
+      <ul> 
 
-React.render(<TodoApp />, mountNode);
+      </ul>
+      );
+  }
+});
+
+var MovieRow = React.createClass({
+  render: function () {
+    return (
+      <li> foo  </li>
+      );
+  }
+});
+
+var MovieSearch = React.createClass({
+  onChange: function () {
+    this.props.onUserInput(this.refs.search.getDOMNode().value);
+  },
+  render: function () {
+    return <input type="text" onChange={this.onChange} ref="search"/>;
+  }
+})
+
+
+React.render(<MovieApp />, mountNode);
 
